@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>购物车</title>
+  <style>
+    .active {
+      background-color: #ddd;
+    }
+  </style>
 </head>
 <body>
   <!-- 宿主文件 -->
@@ -13,6 +18,28 @@
       <!-- 插值文本 -->
       {{title}}
     </h2>
+
+    <!-- 用户输入 -->
+    <p>
+      <input type="text" v-model="course" v-on:keydown.enter="addCourse">
+      <button @click="addCourse">新增</button>
+    </p>
+
+    <!-- 条件渲染 -->
+    <p v-if="courses.length == 0">没有任何课程信息</p>
+
+    <!-- 列表渲染 -->
+    <!-- <div v-for="c in courses" :key="c" :class="{active: selectedCourse === c}" @click="selectedCourse = c">
+      {{ c }}
+    </div> -->
+
+    <div class="course-list" v-else>
+      <div v-for="c in courses" :key="c" :style="{backgroundColor: selectedCourse === c ? '#ddd' : 'transparent'}" @click="selectedCourse = c">
+        {{ c }}
+      </div>
+    </div>
+    <!-- style -->
+    
   </div>
 
   <script src="vue.js"></script>
@@ -22,9 +49,20 @@
       el: '#app',
       data() {
         return {
-          title: '购物车'
+          title: '购物车',
+          course: '',
+          selectedCourse: '',
+          courses: []
         }
       },
+      methods: {
+        addCourse() {
+          // 1.添加course到数组
+          this.courses.push(this.course)
+          // 2.清空course
+          this.course = ''
+        }
+      }
     })
   </script>
 </body>
